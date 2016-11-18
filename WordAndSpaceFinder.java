@@ -42,7 +42,7 @@ public final class WordAndSpaceFinder {
         printWordsAndSpaceCount("Thisisanannoyingboardroom");
     }
 
-    public static void printWordsAndSpaceCount(String continuousString){
+    private static void printWordsAndSpaceCount(String continuousString){
         ArrayList<Integer> spacePositions = new ArrayList<Integer>(); //List of all possible space positions
         spacePositions.add(0);
         int lastPossibleSpacePosition = spacePositions.get(spacePositions.size()-1);
@@ -75,7 +75,7 @@ public final class WordAndSpaceFinder {
         System.out.println("Number of Spaces: " + spacePositions.size());
     }
 
-    public static int checkForMatchInDictionary(String possibleWord){
+    private static int checkForMatchInDictionary(String possibleWord){
         if(possibleWord != null && !possibleWord.equals("") && possibleWord.length()>0){
             possibleWord = possibleWord.toUpperCase();
             Character firstLetter = possibleWord.charAt(0);
@@ -101,7 +101,7 @@ public final class WordAndSpaceFinder {
     }
 
     /*Method to add words to Dictionary in UpperCase under corresponding Start Letter*/
-    public static void addWordsToDictionary(ArrayList<String> wordsList){
+    private static void addWordsToDictionary(ArrayList<String> wordsList){
         for (Iterator iterator = wordsList.iterator(); iterator.hasNext();) {
             String word = ((String) iterator.next()).toUpperCase(Locale.ENGLISH);
             if(word != null && !word.equals("") && word.length()>0){
@@ -117,7 +117,8 @@ public final class WordAndSpaceFinder {
                     DICTIONARY_MAP.put(firstLetter, newWordsList);
                 }
             }
-        }
+       }
+    
     }
 
 }
