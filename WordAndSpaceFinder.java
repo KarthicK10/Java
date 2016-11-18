@@ -31,15 +31,33 @@ public final class WordAndSpaceFinder {
         addWordsToDictionary(new ArrayList<String>(Arrays.asList("A", "APPLE", "ALPHABET", "BALL", "Ball", "bat", "baloon")));
         addWordsToDictionary(new ArrayList<String>(Arrays.asList("THIS", "THAT", "Flower", "flag", "is", "a", "WAS", "APPLE", "BAT", "TABLE", "CAR", "good")));
         addWordsToDictionary(new ArrayList<String>(Arrays.asList("an", "annoying", "board", "room", "boardroom")));
+        addWordsToDictionary(new ArrayList<String>(Arrays.asList("and", "android", "rock", "king", "rocking")));
 
         printWordsAndSpaceCount("Aflowerisaflag"); //Positive all happy run
 
-		/*Choosing this string to test the following:
+		/*
+         *  Choosing this string to test the following:
 		 * 	'an' should be considered as whole word instead of 'a'
 		 * 	'annoying' should be considered as whole word instead of 'an'
 		 * 'boardroom' should be considered as whole word instead of 'board' and 'room';
-		 * */
+		 */
         printWordsAndSpaceCount("Thisisanannoyingboardroom");
+
+        /*
+         *  Choosing this string to test the following:
+		 * 	'android' should be considered as whole word instead of 'a' or 'an' or 'and'
+		 * 	'rocking' should be considered as whole word instead of 'rock' or 'king'
+		 *  Accidental space between Android and isrocking! is ignored
+		 *  '!' punctuation mark is ignored
+		 */
+        printWordsAndSpaceCount("Android isrocking!");
+
+        /*
+         *  Choosing this string to test the following:
+         *  More than one sentence
+		 *  '.' between sentences
+		 */
+        printWordsAndSpaceCount("Android isrocking!Aflowerisaflag.Thisisanannoyingboardroom");
     }
 
     private static void printWordsAndSpaceCount(String continuousString){
@@ -48,6 +66,8 @@ public final class WordAndSpaceFinder {
         int lastPossibleSpacePosition = spacePositions.get(spacePositions.size()-1);
         int nextPossibleSpacePosition = lastPossibleSpacePosition + 1;
         int tempPossibleSpacePosition = 0;
+        continuousString = removePunctuation(continuousString); //Remove all punctuation marks from the string
+        //TODO Handle apostraphe ex: dog's tail - possibly can be handled within checkForMatchInDictionary
         while(nextPossibleSpacePosition<=continuousString.length()){
             String possibleWord = continuousString.substring(lastPossibleSpacePosition, nextPossibleSpacePosition);
             Integer matchResult = checkForMatchInDictionary(possibleWord);
@@ -66,6 +86,7 @@ public final class WordAndSpaceFinder {
                     lastPossibleSpacePosition = tempPossibleSpacePosition;
                     nextPossibleSpacePosition --;
                     System.out.println(possibleWord.substring(0, possibleWord.length()-1));
+                    tempPossibleSpacePosition = 0;
                 }
             }
             nextPossibleSpacePosition++; // This means its a START_MATCH, go forward and see if you get a bigger word
@@ -117,8 +138,21 @@ public final class WordAndSpaceFinder {
                     DICTIONARY_MAP.put(firstLetter, newWordsList);
                 }
             }
-       }
-    
+        }
+    }
+
+    //Method to check if a character is a punctuation mark
+    private static String removePunctuation(String inputString){
+        if(inputString != null && inputString.length()>0){
+            inputString = inputString.replace(".", "");
+            inputString = inputString.replace(",", "");
+            inputString = inputString.replace(";", "");
+            inputString = inputString.replace("-", "");
+            inputString = inputString.replace("!", "");
+            inputString = inputString.replace("?", "");
+            inputString = inputString.replace(" ", "");
+        }
+        return inputString;
     }
 
 }
